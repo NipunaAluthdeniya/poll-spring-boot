@@ -1,6 +1,9 @@
 package com.poll.Poll_Spring_Boot.controllers.user;
 
+import com.poll.Poll_Spring_Boot.dtos.CommentDTO;
+import com.poll.Poll_Spring_Boot.dtos.LikesDTO;
 import com.poll.Poll_Spring_Boot.dtos.PollDTO;
+import com.poll.Poll_Spring_Boot.dtos.VoteDTO;
 import com.poll.Poll_Spring_Boot.services.user.PollService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,6 +42,40 @@ public class PollController {
     @GetMapping("/my-polls")
     public ResponseEntity<?> getMyPolls() {
         return ResponseEntity.ok(pollService.getMyPolls());
+    }
+
+    @GetMapping("/poll/like/{id}")
+    public ResponseEntity<?> giveLikeToPoll(@PathVariable Long id) {
+        LikesDTO likeDTO = pollService.giveLikeToPoll(id);
+        if (likeDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(likeDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PostMapping("/poll/comment")
+    public ResponseEntity<?> postCommentOnPoll(@RequestBody CommentDTO commentDTO) {
+        CommentDTO postedCommentDTO = pollService.postCommentOnPoll(commentDTO);
+        if (postedCommentDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postedCommentDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PostMapping("/poll/vote")
+    public ResponseEntity<?> postCommentOnPoll(@RequestBody VoteDTO voteDTO) {
+        try {
+            return ResponseEntity.ok(pollService.postVoteOnPoll(voteDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/poll/{id}")
+    public ResponseEntity<?> getPollById(@PathVariable Long id) {
+        return ResponseEntity.ok(pollService.getPollById(id));
     }
 
 }

@@ -30,4 +30,6 @@ public class PollDTO {
 
     private boolean voted;
 
+    private boolean isLiked;
+
 }
