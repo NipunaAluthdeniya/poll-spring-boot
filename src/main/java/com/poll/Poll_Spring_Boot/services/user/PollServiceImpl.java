@@ -167,7 +167,7 @@ public class PollServiceImpl implements PollService{
             Comment comment = new Comment();
             comment.setUser(user);
             comment.setPoll(optionalPoll.get());
-            comment.setContent(comment.getContent());
+            comment.setContent(commentDTO.getContent());
             comment.setCreatedAt(new Date());
             return commentRepository.save(comment).getCommentDTO();
         }
